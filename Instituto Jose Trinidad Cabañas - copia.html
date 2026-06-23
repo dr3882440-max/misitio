@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instituto José Trinidad Cabañas</title>
+    <style>
+        /* --- Estilos Generales --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            overflow-x: hidden;
+            background-color: #111;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- Video de Fondo --- */
+        .video-background {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -100;
+            background-size: cover;
+            filter: brightness(35%);
+        }
+
+        /* --- Encabezado --- */
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .logo-container img {
+            max-width: 120px;
+            margin-bottom: 15px;
+        }
+
+        header h1 {
+            font-size: 3.5rem;
+            font-weight: bold;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.9);
+            margin-bottom: 5px;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
+        }
+
+        /* --- Barra de Navegación Roja --- */
+        nav {
+            background-color: #b00000;
+            border-top: 2px solid #ff0000;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 15px 25px;
+            text-decoration: none;
+            color: #ffffff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .nav-link:hover {
+            background-color: #800000;
+        }
+
+        /* --- Menú Desplegable Azul Oscuro Nítido (Nueva Captura) --- */
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: #031c37; /* Azul nítido de la captura */
+            min-width: 190px;
+            list-style: none;
+            border-radius: 0 0 6px 6px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.7);
+        }
+
+        .dropdown-menu li a {
+            display: block;
+            padding: 14px 20px;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            text-align: left;
+        }
+
+        .dropdown-menu li a:hover {
+            background-color: #062b52;
+            color: #ffcc00;
+        }
+
+        .nav-item:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /* --- Ventanas Compactas y Centradas --- */
+        .window-section {
+            max-width: 850px;         
+            width: 90%;               
+            margin: 40px auto;        
+            padding: 35px;
+            background: rgba(40, 40, 40, 0.55); /* Gris semitransparente */
+            backdrop-filter: blur(10px);
+            border: 2.5px solid #ff0000; /* Borde rojo por defecto */
+            border-radius: 12px;
+            display: none; 
+            text-align: center;       
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+        }
+
+        .window-section.active {
+            display: block !important;
+        }
+
+        .window-section h2 {
+            font-size: 2.3rem;
+            color: #ffffff;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .text-box {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;       
+        }
+
+        .text-box p {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            text-align: center;       
+        }
+
+        .text-box p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* --- Foto Inicio --- */
+        .contenedor-imagen-estricto {
+            width: 250px;           
+            height: 170px;          
+            border-radius: 15px;
+            border: 3px solid #ff0000;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+            overflow: hidden;       
+            margin: 0 auto 20px auto;
+        }
+
+        .contenedor-imagen-estricto img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;      
+            display: block;
+        }
+
+        /* --- Sección Áreas: 4 Bloques de Texto y 4 Imágenes --- */
+        .areas-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .area-card {
+            background: rgba(0,0,0,0.4);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .area-card img {
+            width: 100%;
+            height: 130px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 12px;
+        }
+
+        /* --- Sección Docentes (Borde Rojo Brillante y Resplandor Blanco) --- */
+        .docentes-section {
+            max-width: 950px;
+            border: 2.5px solid #ff0000 !important; /* Rojo brillante estricto */
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.4);
+        }
+
+        .docentes-section .subtitle {
+            font-size: 1.1rem;
+            color: #dddddd;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .docentes-row {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .docente-card {
+            width: 240px;
+            height: 300px;
+            border-radius: 20px; 
+            overflow: hidden;
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.6); /* Resplandor Blanco Difuminado */
+            background-color: #222;
+        }
+
+        .docente-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* --- Footer y Estadísticas --- */
+        .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 100px;
+            padding: 40px 0;
+            font-size: 2rem;
+            font-weight: 600;
+            text-shadow: 2px 2px 4px #000;
+        }
+
+        footer {
+            background-color: #b00000;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            font-weight: 600;
+            margin-top: auto;
+        }
+
+        /* --- TikTok Flotante --- */
+        .tiktok-float {
+            position: fixed;
+            bottom: 40px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background-color: #000;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 2.2rem; }
+            .stats-row { flex-direction: column; gap: 20px; }
+            .nav-container { flex-wrap: wrap; }
+        }
+    </style>
+</head>
+<body>
+
+    <video autoplay muted loop playsinline class="video-background">
+        <source src="C:\Users\user\Downloads\tu-video.mp4" type="video/mp4">
+    </video>
+
+    <header>
+        <div class="logo-container">
+            <img src="C:\Users\user\Downloads\FOTOOO PNG.png" alt="Logo">
+        </div>
+        <h1>José Trinidad Cabañas</h1>
+        <p>Trabajo • Estudio • Disciplina</p>
+    </header>
+
+    <nav>
+        <ul class="nav-container">
+            <li class="nav-item"><a onclick="showWindow('win-inicio')" class="nav-link">🏠 Inicio</a></li>
+            
+            <li class="nav-item">
+                <a class="nav-link">👥 Quiénes Somos ▼</a>
+                <ul class="dropdown-menu">
+                    <li><a onclick="showWindow('win-informacion')">Información</a></li>
+                    <li><a onclick="showWindow('win-estructura')">Estructura</a></li>
+                    <li><a onclick="showWindow('win-fundador')">Fundador</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link">🔧 Áreas ▼</a>
+                <ul class="dropdown-menu">
+                    <li><a onclick="showWindow('win-areas')">Área Estructura</a></li>
+                    <li><a onclick="showWindow('win-areas')">Area de Madera</a></li>
+                    <li><a onclick="showWindow('win-areas')">Are de Hogar</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link">🎓 Carreras ▼</a>
+                <ul class="dropdown-menu">
+                    <li><a onclick="showWindow('win-carreras')">Ver Carreras</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link">🕒 Jornadas ▼</a>
+                <ul class="dropdown-menu">
+                    <li><a onclick="showWindow('win-jornadas')">Ver Jornadas</a></li>
+                </ul>
+            </li>
+
+            <li class="nav-item">
+                <a onclick="showWindow('win-docentes')" class="nav-link">📇 Docentes ▼</a>
+            </li>
+        </ul>
+    </nav>
+
+    <main class="window-section active" id="win-inicio">
+        <div class="contenedor-imagen-estricto">
+            <img src="C:\Users\user\Downloads\fot pgn.jpeg" alt="Desfile">
+        </div>
+        <h2>Bienvenidos</h2>
+        <div class="text-box">
+            <p>Portal educativo oficial del Instituto Técnico José Trinidad Cabañas. Estamos ubicados en Olanchito, Yoro, dedicados a la formación integral de la juventud hondureña.</p>
+        </div>
+    </main>
+
+    <section class="window-section" id="win-informacion">
+        <h2>Información Institucional</h2>
+        <div class="text-box">
+            <p>Somos una Institución Educativa comprometida a inculcar los valores morales, culturales e intelectuales para formar hombres y mujeres de bien, capaces de contribuir al desarrollo de nuestro país con una sólida base académica.</p>
+        </div>
+    </section>
+
+    <section class="window-section" id="win-estructura">
+        <h2>Estructura Organizativa</h2>
+        <div class="text-box">
+            <p>Nuestra institución cuenta con una organización ejemplar liderada por la dirección, secretaría, consejo de profesores y personal administrativo, todos enfocados en el éxito educativo.</p>
+        </div>
+    </section>
+
+    <section class="window-section" id="win-fundador">
+        <h2>Nuestros Fundadores</h2>
+        <div class="text-box">
+            <p>fue el profesor Ramón de Jesús Durán Hernández. El centro educativo fue establecido originalmente en el año 1968, con el propósito de brindar oportunidades de estudio a jóvenes y adultos trabajadores..</p>
+        </div>
+    </section>
+
+    <section class="window-section" id="win-areas">
+        <h2>Áreas</h2>
+        <div class="areas-grid">
+            <div class="area-card">
+            <div class="area-card">
+                <img src="C:\Users\user\Pictures\Screenshots\area 1.png" alt="Estructura">
+                <p><strong>Área de Estructura:</strong> Área de estructura metálica" puede referirse al diseño de un espacio físico construido con acero (como un tinglado, taller o almacén) o al área de acero en cálculo estructural (la sección transversal de las barras de refuerzo)..</p>
+            </div>
+            <div class="area-card">
+                <img src="C:\Users\user\Downloads\Area 2.jpeg" alt="Madera">
+                <p><strong>Área de Madera:</strong> Es la zona de carpintería o taller (el espacio físico donde se trabaja este material), o bien al cálculo del área o volumen para proyectos de construcción .</p>
+            </div>
+            <div class="area-card">
+                <img src="C:\Users\user\Downloads\AREA 3.jpeg" alt="Hogar">
+                <p><strong> Hogar:</strong> Aprendizaje para el desarrollo del hogar.
+              El Área de Hogar está orientada al desarrollo de habilidades prácticas relacionadas con la administración del hogar, la preparación de alimentos, la nutrición, la higiene, la confección básica y la decoración. Los estudiantes adquieren conocimientos que contribuyen a su formación integral y al mejoramiento de la calidad de vida familiar y comunitaria.
+
+
+.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="window-section" id="win-carreras">
+        <h2>Nuestras Carreras</h2>
+        <div class="text-box">
+            <p><strong>1. Bachillerato Técnico Profesional en Informática:</strong> Formación integral en desarrollo de sistemas, redes y soporte técnico.</p>
+            <p><strong>2. Bachillerato Técnico Profesional en Ciencias y Humanidades:</strong>ofrece una formación multidisciplinar que integra filosofía, historia, literatura y arte .</p>
+            <p><strong>3. Bachillerato en Electricidad:</strong> capacita para diseñar, instalar y mantener sistemas eléctricos, desde redes residenciales hasta distribución industrial.</p>
+        </div>
+    </section>
+
+    <section class="window-section" id="win-jornadas">
+        <h2>Jornadas Disponibles</h2>
+        <div class="text-box">
+            <p>El Instituto cuenta con jornadas adaptadas a las necesidades de la comunidad estudiantil de Olanchito (Matutina, Vespertina y Nocturna), garantizando espacios formativos de calidad con horarios flexibles para la juventud.</p>
+        </div>
+    </section>
+
+    <section class="window-section docentes-section" id="win-docentes">
+        <h2>Docentes</h2>
+        <div class="subtitle">Profesionales altamente capacitados.</div>
+        <div class="docentes-row">
+            <div class="docente-card"><img src="C:\Users\user\Downloads\FOTO1.jpeg" alt="Docente 1"></div>
+            <div class="docente-card"><img src="C:\Users\user\Downloads\FOTO2.jpeg" alt="Docente 2"></div>
+            <div class="docente-card"><img src="C:\Users\user\Downloads\FOTO3.jpeg" alt="Docente 3"></div>
+            <div class="docente-card"><img src="C:\Users\user\Downloads\FOTO4.jpeg" alt="Docente 4"></div>
+            <div class="docente-card"><img src="C:\Users\user\Downloads\FOTO5.jpeg" alt="Docente 5"></div>
+            <div class="docente-card"><img src="C:\Users\user\Downloads\FOTO6.jpeg" alt="Docente 6"></div>
+            <div class="docente-card"><img src="C:\Users\user\Downloads\FOTO7.jpeg" alt="Docente 7"></div>
+            <div class="docente-card"><img src="C:\Users\user\Downloads\FOTO8.jpeg" alt="Docente 8"></div>
+            <div class="docente-card"><img src="C:\Users\user\Downloads\FOTO9.jpeg" alt="Docente 9"></div>
+            <div class="docente-card"><img src="C:\Users\user\Downloads\FOTO10.jpeg" alt="Docente 10"></div>
+            <div class="docente-card"><img src="C:\Users\user\Downloads\FOTO11.jpeg" alt="Docente 11"></div>
+            <div class="docente-card"><img src="C:\Users\user\Downloads\FOTO12.jpeg" alt="Docente 12"></div>
+            <div class="docente-card"><img src="C:\Users\user\Downloads\FOTO13.jpeg" alt="Docente 13"></div>
+            <div class="docente-card"><img src="C:\Users\user\Downloads\FOTO14.jpeg" alt="Docente 14"></div>
+        </div>
+    </section>
+
+    <div class="stats-row">
+        <div>1394<br><span style="font-size: 1.2rem; font-weight: 400;">Estudiantes</span></div>
+        <div>63<br><span style="font-size: 1.2rem; font-weight: 400;">Docentes</span></div>
+        <div>5<br><span style="font-size: 1.2rem; font-weight: 400;">Carreras</span></div>
+    </div>
+
+    <footer>
+        © 2026 Colegio José Trinidad Cabañas<br>
+        <span style="font-size: 0.9rem; font-weight: 400; opacity: 0.8;">Derechos de autor: Doceavo Vespertina</span>
+    </footer>
+
+   <a href="https://www.tiktok.com/@ipjtc1807" target="_blank" class="tiktok-float" title="Síguenos en TikTok">
+        <svg width="28" height="28" fill="white" viewBox="0 0 448 512">
+            <path d="M448,209.91a210.06,210.06,0,0,1-122.77-39.25V349.38A162.55,162.55,0,1,1,185,188.31V278.2a74.62,74.62,0,1,0,52.23,71.18V0l88,0a121.18,121.18,0,0,0,1.86,22.17h0A122.18,122.18,0,0,0,381,102.39a121.43,121.43,0,0,0,67,20.14Z"/>
+        </svg>
+    </a>
+
+    <script>
+        function showWindow(windowId) {
+            const sections = document.querySelectorAll('.window-section');
+            sections.forEach(sec => sec.classList.remove('active'));
+            const target = document.getElementById(windowId);
+            if(target) target.classList.add('active');
+        }
+    </script>
+
+</body>
+</html>
